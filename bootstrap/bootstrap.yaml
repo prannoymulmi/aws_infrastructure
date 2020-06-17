@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Initial bootstrap to run terraform
+
+Parameters:
+  AccountId:
+    Type: String
+
+Resources:
+  StateBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "terraform-state-bucket-${AWS::AccountId}-${AWS::Region}"
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  StateLock:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: "terraform-lock-table"
+      KeySchema:
+        - AttributeName: "LockID"
+          KeyType: "HASH"
+      AttributeDefinitions:
+        - AttributeName: "LockID"
+          AttributeType: "S"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      SSESpecification:
+        SSEEnabled: true
+
+  MainUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: "mainUser"
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AWSServiceCatalogEndUserFullAccess'
+
+
