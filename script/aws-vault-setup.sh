@@ -28,7 +28,7 @@ aws configure set region eu-west-1 --profile pmulmi-admin
     AWS_SECRET_ACCESS_KEY="${aws_secret_access_key}" \
     aws-vault add pmulmi-admin --env
 
-    aws configure set region eu-central-1 --profile pmulmi-admin
+    aws configure set region eu-west-1 --profile pmulmi-admin
     aws configure set source_profile pmulmi-admin --profile pmulmi-admin
     aws configure set role_arn "arn:aws:iam::${aws_account_id}:role/${aws_role_name}" --profile pmulmi-admin
 }
