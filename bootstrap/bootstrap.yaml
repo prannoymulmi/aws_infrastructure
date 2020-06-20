@@ -3,14 +3,14 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Initial bootstrap to run terraform
 
 Parameters:
-  AccountId:
+  NAME:
     Type: String
 
 Resources:
   StateBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "terraform-state-bucket-${AWS::AccountId}-${AWS::Region}"
+      BucketName: !Sub "terraform-state-bucket-${NAME}-${AWS::Region}"
       VersioningConfiguration:
         Status: Enabled
       BucketEncryption:

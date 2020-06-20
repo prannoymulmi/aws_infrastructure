@@ -5,7 +5,7 @@ set -eo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" ; pwd -P)"
 
 AWS_REGION="eu-west-1"
-ACCOUNT_ID="633035071730"
+NAME="hxmcdpcqyy"
 
 function bootstrap() {
 
@@ -16,7 +16,7 @@ function bootstrap() {
     --template-file "${SCRIPT_DIR}/bootstrap.yaml" \
     --stack-name initial \
     --parameter-overrides \
-        AccountId=${ACCOUNT_ID} \
+        NAME=${NAME} \
     --capabilities CAPABILITY_NAMED_IAM \
     --region "${AWS_REGION}"
 }
