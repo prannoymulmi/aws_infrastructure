@@ -2,6 +2,7 @@
 
 set -o pipefail
 RESOURCE=$1
+ENVIRONMENT=${2:-preview}
 SCRIPT_DIR="$(cd "$(dirname "$0")" ; pwd -P)"
 
 
@@ -12,13 +13,15 @@ deploy_tf
 
 function deploy_tf(){
 pushd "../terraform/${RESOURCE}" > /dev/null
-pwd
-aws-vault exec pmulmi-admin -- terraform init
+
+#unset AWS_VAULT
+aws-vault exec pmulmi-admin
+terraform workspace select "${ENVIRONMENT}" || terraform workspace new "${ENVIRONMENT}"
+terraform init
+terraform apply -var-file=preview.tfvars
 
 popd > /dev/null
 
 }
 
-pushd "${SCRIPT_DIR}" > /dev/null
-  main
-popd > /dev/null
+main

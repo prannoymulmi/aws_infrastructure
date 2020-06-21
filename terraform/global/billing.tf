@@ -8,12 +8,12 @@ resource "aws_cloudwatch_metric_alarm" "account-billing-alarm" {
   namespace           = "AWS/Billing"
   period              = "21600" # The period in seconds ~ 6 hours
   statistic           = "Average"
-  threshold           = "5"
+  threshold           = "0" # Remove the 0 it is only fo testing
   alarm_description   = "Billing alarm by account"
-  alarm_actions       = ["<your-sns-topic-arn-for-notification>"]
+  alarm_actions       = ["${module.sns-billing-email-topic.arn}"]
 
-  dimensions {
+  dimensions ={
     Currency      = "USD"
-    LinkedAccount = "${data.aws_caller_identity.account_id}"
+    LinkedAccount = "${data.aws_caller_identity.account.account_id}"
   }
 }
